@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" src="static/jquery/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		function poll() {
+			$.ajax({
+				url : 'http://localhost:8080/comet/MessageServlet.htm?time='
+						+ (new Date()).getTime(),
+				type : 'POST',
+				dataType : 'text',
+				success : function(data) {
+					$('#ctn').append(data + '</br>');
+					poll();
+				},
+				error : function() {
+					$('#ctn').append('error</br>');
+				}
+			});
+		}
+		poll();
+	});
+
+	function sendMsg() {
+		$.post('sendMsg.jsp', function(data) {
+		});
+	}
+</script>
+<title>Comet</title>
+</head>
+<body>
+	<div>
+		<a href="javascript:void(0)" onclick="sendMsg();">发送</a>
+	</div>
+	<div id="ctn"></div>
+</body>
+</html>
